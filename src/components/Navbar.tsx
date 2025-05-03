@@ -93,6 +93,26 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, [isOpen]);
 
+  // Prevent scrolling on navbar
+  useEffect(() => {
+    const preventScroll = (e: WheelEvent) => {
+      // Prevent the default scroll behavior when mouse is over navbar
+      e.preventDefault();
+    };
+    
+    // Add the event listener to the navbar element
+    const navElement = navRef.current;
+    if (navElement) {
+      navElement.addEventListener('wheel', preventScroll, { passive: false });
+    }
+    
+    return () => {
+      if (navElement) {
+        navElement.removeEventListener('wheel', preventScroll);
+      }
+    };
+  }, []);
+
   // Close mobile menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -272,8 +292,8 @@ const Navbar: React.FC = () => {
 
       {/* Mobile Menu - Full screen overlay */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 bg-white z-50 overflow-y-auto">
-          <div className="flex flex-col h-full">
+        <div className="md:hidden fixed inset-0 bg-white z-50 no-scrollbar mobile-menu">
+          <div className="flex flex-col h-full no-scrollbar">
             {/* Mobile Menu Header */}
             <div className="flex justify-between items-center p-4 border-b border-gray-200">
               <Link to="/" className="flex-shrink-0" onClick={() => setIsOpen(false)}>
@@ -288,7 +308,7 @@ const Navbar: React.FC = () => {
             </div>
             
             {/* Mobile Menu Items */}
-            <div className="flex-1 p-4">
+            <div className="flex-1 p-4 no-scrollbar overflow-hidden">
               <div className="space-y-4">
                 {navItems.map((item) => (
                   <div key={item.name} className="border-b border-gray-100 pb-3">
