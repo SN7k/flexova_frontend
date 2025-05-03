@@ -1,8 +1,38 @@
-import React from 'react';
-import { Facebook, Twitter, Instagram, Youtube, Mail } from 'lucide-react';
+import React, { useState } from 'react';
+import { Facebook, Twitter, Instagram, Youtube, Mail, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer: React.FC = () => {
+  const [email, setEmail] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    
+    // Basic email validation
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    
+    setIsSubmitting(true);
+    
+    // Simulate API call to subscribe user
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubscribed(true);
+      setEmail('');
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => {
+        setSubscribed(false);
+      }, 5000);
+    }, 1000);
+  };
+
   const footerLinks = {
     company: [
       { name: 'About Us', path: '/about' },
@@ -97,17 +127,46 @@ const Footer: React.FC = () => {
         <div className="mt-10 pt-8 border-t border-gray-800">
           <div className="max-w-md mx-auto px-4 sm:px-0">
             <h3 className="font-semibold mb-3 text-center">Subscribe to Our Newsletter</h3>
-            <div className="flex flex-col sm:flex-row">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg sm:rounded-r-none bg-gray-800 border border-gray-700 focus:outline-none focus:border-primary mb-2 sm:mb-0"
-              />
-              <button className="bg-primary text-white px-6 py-2 rounded-lg sm:rounded-l-none hover:bg-primary/90 transition-colors flex items-center justify-center">
-                <Mail className="h-5 w-5 sm:mr-2" />
-                <span className="hidden sm:inline">Subscribe</span>
-              </button>
-            </div>
+            <form onSubmit={handleSubscribe} className="w-full">
+              <div className="flex flex-col sm:flex-row w-full">
+                <div className="flex-1 mb-2 sm:mb-0">
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Enter your email"
+                    className={`w-full px-4 py-2 rounded-lg sm:rounded-r-none bg-gray-800 border ${error ? 'border-red-500' : 'border-gray-700'} focus:outline-none focus:border-primary`}
+                    disabled={isSubmitting || subscribed}
+                  />
+                </div>
+                <button 
+                  type="submit" 
+                  className={`${isSubmitting || subscribed ? 'bg-green-600' : 'bg-primary'} text-white px-6 py-2 rounded-lg sm:rounded-l-none hover:bg-primary/90 transition-colors flex items-center justify-center`}
+                  disabled={isSubmitting || subscribed}
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center">
+                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      Processing
+                    </span>
+                  ) : subscribed ? (
+                    <span className="flex items-center">
+                      <Check className="h-5 w-5 mr-2" />
+                      Subscribed!
+                    </span>
+                  ) : (
+                    <>
+                      <Mail className="h-5 w-5 sm:mr-2" />
+                      <span className="hidden sm:inline">Subscribe</span>
+                    </>
+                  )}
+                </button>
+              </div>
+              {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+            </form>
           </div>
         </div>
 
