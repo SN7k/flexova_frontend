@@ -14,19 +14,19 @@ const Navbar: React.FC = () => {
   const cartItemCount = state.items.length;
   const navRef = useRef<HTMLDivElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
   const lastScrollY = useRef(0);
   const location = useLocation();
   
-  // Prevent body scroll when mobile menu is open
+  // Handle body overflow when menu is open
   useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.classList.add('overflow-hidden');
     } else {
-      document.body.style.overflow = '';
+      document.body.classList.remove('overflow-hidden');
     }
+    
     return () => {
-      document.body.style.overflow = '';
+      document.body.classList.remove('overflow-hidden');
     };
   }, [isOpen]);
 
@@ -270,83 +270,73 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      <div className="md:hidden">
-        <AnimatePresence>
-          {isOpen && (
-            <>
-              {/* Backdrop overlay */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="fixed inset-0 bg-black"
-                style={{ zIndex: 40 }}
+      {/* Mobile Menu - Full screen overlay */}
+      {isOpen && (
+        <div className="md:hidden fixed inset-0 bg-white z-50 overflow-y-auto">
+          <div className="flex flex-col h-full">
+            {/* Mobile Menu Header */}
+            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+              <Link to="/" className="flex-shrink-0" onClick={() => setIsOpen(false)}>
+                <img src="/bg.png" alt="Flexova" className="h-12 w-auto" />
+              </Link>
+              <button
                 onClick={() => setIsOpen(false)}
-              />
-              
-              {/* Slide-in menu */}
-              <motion.div
-                ref={mobileMenuRef}
-                initial={{ x: '-100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '-100%' }}
-                transition={{ duration: 0.3 }}
-                className="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-white shadow-lg z-50 overflow-y-auto"
-                style={{ paddingTop: '4rem' }}
+                className="p-2 rounded-md text-gray-700 hover:bg-gray-100"
               >
-                <div className="px-4 py-2 space-y-2">
-                  {navItems.map((item) => (
-                    <div key={item.name} className="border-b border-gray-100 py-2">
-                      <Link
-                        to={item.path}
-                        className={`block px-2 py-2 rounded-md ${location.pathname === item.path 
-                          ? 'bg-primary/10 text-primary font-medium' 
-                          : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {item.name}
-                      </Link>
-                    </div>
-                  ))}
-                  
-                  <div className="border-b border-gray-100 py-2">
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            {/* Mobile Menu Items */}
+            <div className="flex-1 p-4">
+              <div className="space-y-4">
+                {navItems.map((item) => (
+                  <div key={item.name} className="border-b border-gray-100 pb-3">
                     <Link
-                      to="/cart"
-                      className={`flex items-center px-2 py-2 rounded-md ${location.pathname === '/cart' 
-                        ? 'bg-primary/10 text-primary font-medium' 
-                        : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
+                      to={item.path}
+                      className={`block px-2 py-3 text-lg rounded-md ${location.pathname === item.path 
+                        ? 'text-primary font-medium' 
+                        : 'text-gray-700'}`}
                       onClick={() => setIsOpen(false)}
                     >
-                      <ShoppingCart className="h-5 w-5 mr-2" />
-                      Cart
-                      {cartItemCount > 0 && (
-                        <span className="ml-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                          {cartItemCount}
-                        </span>
-                      )}
+                      {item.name}
                     </Link>
                   </div>
-                  
-                  <div className="py-2">
-                    <Link
-                      to={user ? "/profile" : "/login"}
-                      className="block px-2 py-2 rounded-md text-gray-700 hover:text-primary hover:bg-gray-50"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <div className="flex items-center">
-                        <User className="h-5 w-5 mr-2" />
-                        {user ? "My Account" : "Login / Register"}
-                      </div>
-                    </Link>
-                  </div>
+                ))}
+                
+                <div className="border-b border-gray-100 pb-3">
+                  <Link
+                    to="/cart"
+                    className={`flex items-center px-2 py-3 text-lg rounded-md ${location.pathname === '/cart' 
+                      ? 'text-primary font-medium' 
+                      : 'text-gray-700'}`}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <ShoppingCart className="h-5 w-5 mr-3" />
+                    Cart
+                    {cartItemCount > 0 && (
+                      <span className="ml-2 bg-primary text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </Link>
                 </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
-      </div>
+                
+                <div className="pt-2">
+                  <Link
+                    to={user ? "/profile" : "/login"}
+                    className="flex items-center px-2 py-3 text-lg rounded-md text-gray-700"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <User className="h-5 w-5 mr-3" />
+                    {user ? "My Account" : "Login / Register"}
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
