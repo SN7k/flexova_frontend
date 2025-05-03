@@ -206,23 +206,23 @@ const Home: React.FC = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section className="py-16 bg-primary">
+      <section className="py-12 sm:py-16 bg-primary">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
+            <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">
               Subscribe to Our Newsletter
             </h2>
-            <p className="text-white/80 mb-8">
+            <p className="text-white/80 mb-6 sm:mb-8 text-sm sm:text-base">
               Get the latest updates on new products and upcoming sales
             </p>
-            <div className="max-w-md mx-auto">
-              <div className="flex">
+            <div className="max-w-md mx-auto px-2 sm:px-0">
+              <div className="flex flex-col sm:flex-row">
                 <input
                   type="email"
                   placeholder="Enter your email"
-                  className="flex-1 px-4 py-3 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-white"
+                  className="w-full px-4 py-3 rounded-lg sm:rounded-r-none focus:outline-none focus:ring-2 focus:ring-white mb-2 sm:mb-0"
                 />
-                <button className="bg-white text-primary px-6 py-3 rounded-r-lg hover:bg-gray-100 transition-colors">
+                <button className="bg-white text-primary px-6 py-3 rounded-lg sm:rounded-l-none hover:bg-gray-100 transition-colors">
                   Subscribe
                 </button>
               </div>

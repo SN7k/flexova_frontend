@@ -95,16 +95,17 @@ const Footer: React.FC = () => {
 
         {/* Newsletter */}
         <div className="mt-10 pt-8 border-t border-gray-800">
-          <div className="max-w-md mx-auto">
+          <div className="max-w-md mx-auto px-4 sm:px-0">
             <h3 className="font-semibold mb-3 text-center">Subscribe to Our Newsletter</h3>
-            <div className="flex">
+            <div className="flex flex-col sm:flex-row">
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-l-lg bg-gray-800 border border-gray-700 focus:outline-none focus:border-primary"
+                className="flex-1 px-4 py-2 rounded-lg sm:rounded-r-none bg-gray-800 border border-gray-700 focus:outline-none focus:border-primary mb-2 sm:mb-0"
               />
-              <button className="bg-primary text-white px-6 py-2 rounded-r-lg hover:bg-primary/90 transition-colors">
-                <Mail className="h-5 w-5" />
+              <button className="bg-primary text-white px-6 py-2 rounded-lg sm:rounded-l-none hover:bg-primary/90 transition-colors flex items-center justify-center">
+                <Mail className="h-5 w-5 sm:mr-2" />
+                <span className="hidden sm:inline">Subscribe</span>
               </button>
             </div>
           </div>
