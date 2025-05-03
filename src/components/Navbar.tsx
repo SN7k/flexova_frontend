@@ -258,7 +258,7 @@ const Navbar: React.FC = () => {
       </div>
 
       {/* Mobile Navigation - Fixed positioning to prevent layout shifts */}
-      <div className="md:hidden overflow-hidden" style={{ position: 'absolute', width: '100%', zIndex: 40 }}>
+      <div className="md:hidden overflow-hidden w-full" style={{ position: 'absolute', left: 0, top: '64px', width: '100%', zIndex: 999 }}>
         <AnimatePresence>
           {isOpen && (
             <motion.div
@@ -269,7 +269,7 @@ const Navbar: React.FC = () => {
                 duration: 0.2,
                 ease: "easeInOut"
               }}
-              className="bg-white border-t border-gray-200 shadow-lg"
+              className="bg-white border-t border-gray-200 shadow-lg w-full"
             >
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 {navItems.map((item) => (
