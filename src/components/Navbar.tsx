@@ -165,7 +165,7 @@ const Navbar: React.FC = () => {
           {/* Logo - centered on mobile, left on desktop */}
           <div className="md:relative md:left-0 md:transform-none absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center">
             <Link to="/" className="flex-shrink-0 flex items-center">
-              <img src="/bg.png" alt="Flexova" className="h-15 sm:h-17 md:h-19 w-auto" />
+              <img src="/bg.png" alt="Flexova" className="h-14 sm:h-16 md:h-18 w-auto" />
             </Link>
           </div>
 
